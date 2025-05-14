@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 
 // API URL configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ameerhamza-production.up.railway.app';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -39,25 +39,14 @@ const Contact = () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/health`);
         if (response.ok) {
-          // If the base URL works, use it
           setApiUrl(API_BASE_URL);
         } else {
-          // If base URL fails, try to find the correct port
-          for (let port = 5000; port < 5010; port++) {
-            try {
-              const testUrl = `http://localhost:${port}/api/health`;
-              const testResponse = await fetch(testUrl);
-              if (testResponse.ok) {
-                setApiUrl(`http://localhost:${port}`);
-                break;
-              }
-            } catch (error) {
-              continue;
-            }
-          }
+          console.error('Backend server is not responding');
+          setErrorMessage('Unable to connect to the server. Please try again later.');
         }
       } catch (error) {
         console.error('Error checking server health:', error);
+        setErrorMessage('Network error. Please check your connection and try again.');
       }
     };
 
