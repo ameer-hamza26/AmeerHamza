@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,29 +74,38 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <button
+          <motion.button
             onClick={() => scrollToSection('hero')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className="flex items-center space-x-2"
           >
-            <span className="text-2xl font-bold text-gray-800 dark:text-white">
-              Portfolio
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              AH
             </span>
-          </button>
+          </motion.button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <button
+              <motion.button
                 key={link.name}
                 onClick={() => scrollToSection(link.id)}
-                className={`text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors ${
+                whileHover={{ y: -2 }}
+                className={`relative text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors ${
                   activeSection === link.id
-                    ? 'text-blue-600 dark:text-blue-400 font-medium'
+                    ? 'text-blue-600 dark:text-blue-400 font-semibold'
                     : ''
                 }`}
               >
                 {link.name}
-              </button>
+                {activeSection === link.id && (
+                  <motion.div
+                    layoutId="activeSection"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full"
+                  />
+                )}
+              </motion.button>
             ))}
             <button
               onClick={toggleDarkMode}
